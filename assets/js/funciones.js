@@ -10,10 +10,11 @@
         .forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
+                    event.preventDefault();
+                    event.stopPropagation();
                 }else{
                     ingresar();
+                    event.preventDefault();
                 }
 
                 form.classList.add('was-validated')
@@ -22,5 +23,29 @@
 })()
 
 function ingresar(){
-    alert("El usuario ingreso correctamente");
+    let usuario = document.querySelector("#usuario").value;
+    let password = document.querySelector("#password").value;
+    
+    let url =`http://127.0.0.1:3000/identificarPersona`;
+
+    let datos = {
+        usuario: usuario,
+        clave: password
+    };
+
+    fetch(url ,{
+        method:'POST',
+        body: JSON.stringify(datos),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(res => {
+        res.json();
+        let respuesta = res.body;
+        console.log(respuesta)
+    })
+    .then(mensaje => {
+        //console.log(mensaje)
+    })
+    
 }
